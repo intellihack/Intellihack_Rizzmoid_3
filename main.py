@@ -45,14 +45,14 @@ all_splits = text_splitter.split_documents(pages)
 
 vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())
 
-retriever = vectorstore.as_retriever(k=4)
+retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
 
 
 while True:
-    inputt = input("Enter your question: ")
+    inputt = input("\nEnter your question: ")
     # input = "I want to get a loan"
     response = chain_with_history.invoke(
         {"inputt": inputt, "context": retriever.invoke(inputt)},
         {"configurable": {"session_id": "unused"}},
     )
-    print("\n", response.content, "\n")
+    print("\n##########\n", response.content, "\n##########")
